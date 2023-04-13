@@ -43,7 +43,7 @@ jobs:
           GITHUB_SHA: ${{ github.sha }}
 
       - name: Create .env file
-        run: echo "APP_VERSION=${{ steps.version.outputs.tag }}" >> .env
+        run: echo "APP_VERSION=${{ steps.version.outputs.new_tag  }}" >> .env
       
       # - name: Login to Docker Hub
       #   uses: docker/login-action@v1
@@ -80,13 +80,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.CI_CD_DEMO_GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.version.outputs.tag }}
-          release_name: Release ${{ steps.version.outputs.tag }}
+          tag_name: ${{ steps.version.outputs.new_tag }}
+          release_name: Release ${{ steps.version.outputs.new_tag }}
           body: |
-            Release ${{ steps.version.outputs.tag }}
+            Release ${{ steps.version.outputs.new_tag }}
 
             Changes since last release:
-            ${{ steps.version.outputs.changes }}
+            ${{ steps.version.outputs.changelog }}
           draft: false
           prerelease: false
           commitish: main
