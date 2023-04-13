@@ -3,6 +3,7 @@ name: Prod CI/CD
 on:
   pull_request:
     branches: [ main ]
+    types: [closed]
 
 env:
   APP_ENV: prod
@@ -13,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       APP_ENV: prod
+    if: github.event.pull_request.merged
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
