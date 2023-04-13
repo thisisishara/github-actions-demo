@@ -76,7 +76,7 @@ jobs:
 
       - name: Create GitHub release
         uses: actions/create-release@v1
-        if: startsWith(github.ref, 'refs/tags/v')
+        # if: startsWith(github.ref, 'refs/tags/v')
         env:
           GITHUB_TOKEN: ${{ secrets.CI_CD_DEMO_GITHUB_TOKEN }}
         with:
@@ -84,6 +84,9 @@ jobs:
           release_name: Release ${{ steps.version.outputs.tag }}
           body: |
             Release ${{ steps.version.outputs.tag }}
+
+            Changes since last release:
+            ${{ steps.version.outputs.changes }}
           draft: false
           prerelease: false
           target_commitish: main
