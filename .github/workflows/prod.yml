@@ -1,0 +1,92 @@
+name: Prod CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  APP_ENV: prod
+  APP_NAME: ci_cd_demo
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      APP_ENV: prod
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.10.11
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # - name: Run tests
+      #   run: pytest
+
+      - name: Determine version number
+        id: version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: "main"
+          pre_release_branches: "dev"
+        env:
+          GITHUB_REF: ${{ github.ref }}
+          GITHUB_SHA: ${{ github.sha }}
+      
+      - name: Check if tag was found
+        if: steps.version.outputs.tag
+        run: echo "Tag found: ${{ steps.version.outputs.tag }}"
+
+      - name: Create .env file
+        run: echo "APP_VERSION=${{ steps.version.outputs.tag }}" >> .env
+      
+      # - name: Login to Docker Hub
+      #   uses: docker/login-action@v1
+      #   with:
+      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # - name: Build and push Docker image
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: ${{ env.APP_NAME }}:${{ steps.version.outputs.tag }}
+      #     build-args: |
+      #       APP_ENV=${{ env.APP_ENV }}
+      #       APP_VERSION=${{ steps.version.outputs.tag }}
+          
+      # - name: Deploy to prod environment
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.PROD_SERVER_HOST }}
+      #     username: ${{ secrets.PROD_SERVER_USERNAME }}
+      #     key: ${{ secrets.PROD_SERVER_SSH_KEY }}
+      #     script: |
+      #       cd /home/ubuntu/myapp
+      #       export APP_NAME=${{ env.APP_NAME }}
+      #       docker-compose down
+      #       docker-compose pull
+      #       docker-compose up -d
+
+      - name: Create GitHub release
+        uses: actions/create-release@v1
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.version.outputs.tag }}
+          release_name: Release v${{ steps.version.outputs.tag }}
+          body: |
+            Release v${{ steps.version.outputs.tag }}
+          draft: false
+          prerelease: false
+          target_commitish: main
