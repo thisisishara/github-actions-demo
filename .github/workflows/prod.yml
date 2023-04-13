@@ -89,4 +89,4 @@ jobs:
             ${{ steps.version.outputs.changes }}
           draft: false
           prerelease: false
-          target_commitish: main
+          commitish: main
