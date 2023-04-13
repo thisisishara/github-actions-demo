@@ -46,9 +46,6 @@ jobs:
           build-args: |
             APP_ENV=${{ env.APP_ENV }}
             APP_VERSION=${{ env.APP_VERSION }}
-      
-      - name: Logout of Docker Hub
-        uses: docker/logout-action@v1
           
       - name: Deploy to dev environment
         uses: appleboy/ssh-action@master

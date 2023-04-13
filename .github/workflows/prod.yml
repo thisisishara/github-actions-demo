@@ -61,9 +61,6 @@ jobs:
           build-args: |
             APP_ENV=${{ env.APP_ENV }}
             APP_VERSION=${{ steps.version.outputs.VERSION }}
-      
-      - name: Logout of Docker Hub
-        uses: docker/logout-action@v1
           
       # - name: Deploy to prod environment
       #   uses: appleboy/ssh-action@master
