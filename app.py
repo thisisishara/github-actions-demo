@@ -1,5 +1,9 @@
 import logging
+import os
 from flask import Flask, jsonify
+
+APP_NAME = os.getenv("APP_NAME")
+print(APP_NAME)
 
 
 def create_app():

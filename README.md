@@ -52,3 +52,32 @@ feat(api): add new endpoint to retrieve user data
 In this example, feat indicates that a new feature has been added, api indicates that the change was made to the API, and add new endpoint to retrieve user data is a short description of the change.
 
 7. Finally, whenever you make changes to your app, you should commit them to the dev branch with a standardized commit message. Your CI/CD pipeline will automatically detect the changes, run your tests, and deploy the app to a development environment. If the tests are successful, semantic-release will automatically generate a new version number based on the commit message and create a new release on Github. Once you are ready to deploy to production, you can merge the dev branch into the main branch, and your pipeline will automatically deploy the new version of your app to production.
+
+
+## Commit Message Format
+```txt
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+The <type> can be one of the following:
+
+- feat: A new feature
+- fix: A bug fix
+- docs: Documentation changes
+- style: Changes that do not affect the meaning of the code (formatting, etc.)
+- refactor: Code changes that neither fix a bug nor add a feature
+- perf: Performance improvements
+- test: Adding missing tests or correcting existing tests
+- build: Changes to the build system or external dependencies
+- ci: Changes to your CI configuration files and scripts
+- chore: Other changes that don't modify src or test files
+For example, a commit message for adding a new endpoint to your Flask app could look like this:
+
+```text
+feat: Add new endpoint for user authentication
+This format will help you automate the versioning process based on your commit history.
+```
