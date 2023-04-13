@@ -1,0 +1,8 @@
+services:
+  app:
+    build: .
+    image: ci_cd_demo:${APP_VERSION}
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
