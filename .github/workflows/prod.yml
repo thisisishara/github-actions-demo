@@ -34,7 +34,7 @@ jobs:
         id: version
         uses: mathieudutour/github-tag-action@v6.1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.CI_CD_DEMO_GITHUB_TOKEN }}
           release_branches: "main"
           pre_release_branches: "dev"
         env:
@@ -81,7 +81,7 @@ jobs:
         uses: actions/create-release@v1
         if: startsWith(github.ref, 'refs/tags/v')
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.CI_CD_DEMO_GITHUB_TOKEN }}
         with:
           tag_name: v${{ steps.version.outputs.tag }}
           release_name: Release v${{ steps.version.outputs.tag }}
