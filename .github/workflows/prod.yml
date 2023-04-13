@@ -37,7 +37,7 @@ jobs:
           github_token: ${{ secrets.CI_CD_DEMO_GITHUB_TOKEN }}
           release_branches: "main"
           pre_release_branches: "dev"
-          prefix: "v"
+          tag_prefix: "v"
         env:
           GITHUB_REF: ${{ github.ref }}
           GITHUB_SHA: ${{ github.sha }}
