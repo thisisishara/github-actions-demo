@@ -38,25 +38,25 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: ${{ env.APP_NAME_DEV }}:${{ env.APP_VERSION }}, ${{ env.APP_NAME_DEV }}:latest
-          build-args: |
-            APP_ENV=${{ env.APP_ENV }}
-            APP_VERSION=${{ env.APP_VERSION }}
+      # - name: Build and push Docker image
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: ${{ env.APP_NAME_DEV }}:${{ env.APP_VERSION }}, ${{ env.APP_NAME_DEV }}:latest
+      #     build-args: |
+      #       APP_ENV=${{ env.APP_ENV }}
+      #       APP_VERSION=${{ env.APP_VERSION }}
           
-      - name: Deploy to dev environment
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.DEV_SERVER_HOST }}
-          username: ${{ secrets.DEV_SERVER_USERNAME }}
-          key: ${{ secrets.DEV_SERVER_SSH_KEY }}
-          script: |
-            cd /home/ubuntu/myapp
-            export APP_NAME_DEV=${{ env.APP_NAME_DEV }}
-            docker-compose -f compose-dev.yml down
-            docker-compose -f compose-dev.yml pull
-            docker-compose -f compose-dev.yml up -d
+      # - name: Deploy to dev environment
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.DEV_SERVER_HOST }}
+      #     username: ${{ secrets.DEV_SERVER_USERNAME }}
+      #     key: ${{ secrets.DEV_SERVER_SSH_KEY }}
+      #     script: |
+      #       cd /home/ubuntu/myapp
+      #       export APP_NAME_DEV=${{ env.APP_NAME_DEV }}
+      #       docker-compose -f compose-dev.yml down
+      #       docker-compose -f compose-dev.yml pull
+      #       docker-compose -f compose-dev.yml up -d
