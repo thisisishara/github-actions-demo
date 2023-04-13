@@ -41,10 +41,6 @@ jobs:
         env:
           GITHUB_REF: ${{ github.ref }}
           GITHUB_SHA: ${{ github.sha }}
-      
-      - name: Check if tag was found
-        if: steps.version.outputs.tag
-        run: "echo 'Tag found: ${{ steps.version.outputs.tag }}'"
 
       - name: Create .env file
         run: echo "APP_VERSION=${{ steps.version.outputs.tag }}" >> .env
